@@ -28,8 +28,7 @@ jobs:
           images: ghcr.io/liatrio/hello-world-dotnet
           tags: |
             type=sha
-          flavor: |
-            latest=auto
+            type=raw,value=latest
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
