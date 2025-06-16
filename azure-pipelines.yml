@@ -60,7 +60,6 @@ stages:
     displayName: 'Build & SonarQube Analysis'
     jobs:
       - job: BuildAndAnalyze
-
         steps:
           - task: UseDotNet@2
             inputs:
