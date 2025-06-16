@@ -133,7 +133,7 @@ stages:
     condition: succeeded()
     jobs:
     - deployment: DeployWeb
-      displayName: 'Deploy nopCommerce to Azure App Service'
+      displayName: 'Deploy application to Azure App Service'
       environment: 'dev'
       # pool:
       #   vmImage: 'windows-latest'
@@ -151,7 +151,7 @@ stages:
                 deployToSlotOrASE: true
                 resourceGroupName: 'test-rg'
                 slotName: 'staging'
-                package: '$(Pipeline.Workspace)/drop/**/*.zip'
+                package: '$(Pipeline.Workspace)/$(artifactName)/**/*.zip'
                 deploymentMethod: 'auto'
 
   - stage: SwapSlots
