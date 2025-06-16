@@ -89,14 +89,20 @@ stages:
     dependsOn: Deploy
     condition: succeeded()
     jobs:
-      - job: Swap
-        # pool:
-        #   vmImage: 'windows-latest'
+      - job: WaitForApproval
+        pool: server
         steps:
-          - task: ManualIntervention@8
+          - task: ManualValidation@1
             inputs:
-              instructions: 'nareshnaramala4@gmail.com'
-              emailRecipients: 'nareshnaramala4@gmail.com'
+              notifyUsers: 'nareshnaramala4@gmail.com'
+              approvers: 'nareshnaramala4@gmail.com'
+              instructions: | 
+                Please test the app at:
+                https://your-app-name-staging.azurewebsites.net 
+                Approve to continue with slot swap'
+      - job: 
+        dependsOn: WaitForApproval
+        steps:
           - task: AzureAppServiceManage@0
             inputs:
               azureSubscription: 'azure-ado-connection-2'
