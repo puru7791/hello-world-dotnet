@@ -3,8 +3,7 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- main
+trigger: none
 
 pool: 
   name: 'my-self-hosted'
@@ -16,6 +15,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   artifactName: 'dotnet-app'
+  appName: 'myapp'
 
 stages:
   # - stage: Build
@@ -168,9 +168,9 @@ stages:
               approvers: 'nareshnaramala4@gmail.com'
               instructions: | 
                 Please test the app at:
-                https://your-app-name-staging.azurewebsites.net 
+                https://$(appName)-staging.azurewebsites.net 
                 Approve to continue with slot swap'
-      - job: 
+      - job: SwapStageSlotToProduction
         dependsOn: WaitForApproval
         steps:
           - task: AzureAppServiceManage@0
