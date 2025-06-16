@@ -65,13 +65,22 @@ stages:
             inputs:
               packageType: 'sdk'
               version: '9.0.x'  # Or whatever version your project uses
-
-          - task: SonarQubePrepare@7
+          
+          ### Sonar Server
+          # - task: SonarQubePrepare@7
+          #   inputs:
+          #     SonarQube: 'SonarQube-server'
+          #     scannerMode: 'CLI'
+          #     configMode: 'manual'
+          #     cliProjectKey: 'hello-world'
+          #     cliSources: '.'
+          - task: SonarCloudPrepare@3
             inputs:
-              SonarQube: 'SonarQube-server'
-              scannerMode: 'CLI'
+              SonarQube: 'sonar-cloud'
+              organization: 'puru7791'
+              scannerMode: 'cli'
               configMode: 'manual'
-              cliProjectKey: 'hello-world'
+              cliProjectKey: 'puru7791_hello-world-dotnet'
               cliSources: '.'
 
           - task: DotNetCoreCLI@2
@@ -100,12 +109,16 @@ stages:
               command: 'publish'
               projects: '$(solution)'
               arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          - task: SonarCloudAnalyze@3
 
-          - task: SonarQubeAnalyze@7
 
-          - task: SonarQubePublish@7
+         # - task: SonarQubeAnalyze@7   # For Sonar Server
+          - task: SonarCloudPublish@3
             inputs:
               pollingTimeoutSec: '300'
+          # - task: SonarQubePublish@7
+          #   inputs:
+          #     pollingTimeoutSec: '300'
 
           - task: PublishBuildArtifacts@1
             inputs:
